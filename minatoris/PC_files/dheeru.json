@@ -1,0 +1,14 @@
+{
+    "str": 8,
+    "dex": 14,
+    "con": 10,
+    "int": 14,
+    "wis": 16,
+    "cha": 14,
+    "proficient_rolls": [
+        "intsave", "wissave",
+        "arcana", "insight",
+        "investigation", "survival"],
+    "hitdice": 8,
+    "level": 1
+}
