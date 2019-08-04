@@ -1,19 +1,25 @@
-import discord
-import os
+'''Runs the Discord RPG Helper bot.'''
 import argparse
+import os
+
+import discord
 
 from rpg_helper import RPGHelper
 
 
 class DiscordClient(discord.Client):
+    '''Client that handles discord messages.'''
+
     def __init__(self, helper):
         super().__init__()
         self.rpg_helper = helper
 
     async def on_ready(self):
+        '''Logging the bot login.'''
         print("Logged on as", self.user)
 
     async def on_message(self, message):
+        '''Observing each message and responding if needed.'''
         if message.author == self.user:
             return
         userid = message.author.id
@@ -22,11 +28,10 @@ class DiscordClient(discord.Client):
             await message.channel.send(resp)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
+    PARSER = argparse.ArgumentParser()
+    PARSER.add_argument(
         "-l", "--load",
         default="slagthrone",
         help="Load a game by default on start")
-    args = parser.parse_args()
-    client = DiscordClient(RPGHelper(args.load))
-    client.run(os.environ["discord_token"])
+    ARGS = PARSER.parse_args()
+    DiscordClient(RPGHelper(ARGS.load)).run(os.environ["discord_token"])
