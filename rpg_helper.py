@@ -20,7 +20,7 @@ class Stats(dict):
         return str(mod) if mod < 0 else f"+{mod}"
 
 
-class DNDHelper(object):
+class RPGHelper(object):
     def __init__(self, game):
         self.macros = dict()
         self.uuid_map = dict()
