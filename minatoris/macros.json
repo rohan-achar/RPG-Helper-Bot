@@ -29,5 +29,6 @@
     "sleight": "d20{dexmod}{proficiency} {adv_or_disadv}",
     "stealth": "d20{dexmod}{proficiency} {adv_or_disadv}",
     "survival": "d20{wismod}{proficiency} {adv_or_disadv}",
-    "initiative": "d20{dexmod} {adv_or_disadv}"
+    "initiative": "d20{dexmod} {adv_or_disadv}",
+    "hitdice": "d{hitdice}{conmod}"
 }

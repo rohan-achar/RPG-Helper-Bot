@@ -1,0 +1,28 @@
+{
+    "aurelia": {
+        "cha": 14,
+        "chamod": "+2",
+        "con": 10,
+        "conmod": "+0",
+        "dex": 14,
+        "dexmod": "+2",
+        "hitdice": 8,
+        "int": 14,
+        "intmod": "+2",
+        "level": 1,
+        "macros": {},
+        "name": "aurelia",
+        "proficient_rolls": [
+            "intsave",
+            "wissave",
+            "arcana",
+            "insight",
+            "investigation",
+            "survival"
+        ],
+        "str": 8,
+        "strmod": "-1",
+        "wis": 16,
+        "wismod": "+3"
+    }
+}
