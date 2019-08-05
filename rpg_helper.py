@@ -127,9 +127,7 @@ class RPGHelper():
             if self.delete_character(user, args):
                 return f"Deleted character {args}"
         if char_command == "add":
-            charname = self.add_character(user, args)
-            if charname:
-                return f"Added character {charname}"
+            return self.add_character(user, args)
         return f"Did not understand {command}."
 
     def delete_character(self, user, name):
@@ -161,7 +159,7 @@ class RPGHelper():
         try:
             name, stats, proficients, hitdice, level = args.split()
         except ValueError:
-            return f"Unable to parse character ({args})"
+            raise RuntimeError(f"Unable to parse character ({args})")
         if (name in self.characters
                 and not (userkey in self.user_to_characters
                          and name in self.user_to_characters[userkey])):
