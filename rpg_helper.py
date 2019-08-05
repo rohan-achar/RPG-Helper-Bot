@@ -110,12 +110,50 @@ class RPGHelper():
                 "No game has been loaded. "
                 "Load using command `!load <game>`")
 
+        response = None
         if command == "roll":
             # Rolls a particular stat. parameter user is the initiator.
-            return self.handle_roll(user, args)
-        if command == "character":
-            return self.handle_character(user, args)
-        return None
+            response = self.handle_roll(user, args)
+        elif command == "character":
+            response = self.handle_character(user, args)
+        elif command == "macro":
+            response = self.handle_macro(user, args)
+        return response
+
+    def handle_macro(self, user, command):
+        '''Add or delete macros to characters for user'''
+        # !macro add foggy unarmed_atk !roll d20{dex}{proficiency}
+        userkey = str(user)
+        if userkey not in self.user_to_characters:
+            return f"<@{user}> does not have characters to add/del macros to."
+
+        parts = command.split()
+        try:
+            macro_command, character, name = parts[:3]
+        except ValueError:
+            return f"Cannot parse command {command}."
+
+        if character not in self.user_to_characters[userkey]:
+            return (f"<@{user}> does not have character "
+                    f"{character} to add/del macros to.")
+        if macro_command == "add":
+            return self.add_macro(character, name, " ".join(parts[3:]))
+        if macro_command == "del":
+            return self.del_macro(character, name)
+        return f"Unknown macro subcommand received: {macro_command}."
+
+    def add_macro(self, character, name, macro):
+        '''Adds a personal new macro'''
+        self.characters[character].setdefault("macros", dict())[name] = macro
+        self.save_game()
+        return f"Successfully added new macro {name} to {character}."
+
+    def del_macro(self, character, name):
+        '''Deletes an existing macro if it exists'''
+        if name in self.characters[character]["macros"]:
+            del self.characters[character]["macros"][name]
+            return f"Successfully deleted macro {name} from {character}."
+        return f"Did not find macro {name} in {character}."
 
     def handle_character(self, user, command):
         '''Add or delete characters for user.'''
@@ -238,6 +276,16 @@ class RPGHelper():
                 proficiency=(
                     prof if command in stats["proficient_rolls"] else ""),
                 adv_or_disadv=adv_or_disadv if adv_or_disadv else "")
+        if command in self.characters[character]["macros"]:
+            # Resolve the macro format with the key values
+            # in the stats dictionary.
+            return (
+                character, self.characters[character]["macros"][command].format(
+                    **stats,
+                    is_proficient=(
+                        prof if command in stats["proficient_rolls"] else ""),
+                    proficiency=prof,
+                    adv_or_disadv=adv_or_disadv if adv_or_disadv else ""))
         # It is not a known macro.
         return character, roll_command
 
@@ -253,7 +301,7 @@ class RPGHelper():
             r"([0-9]*)d([0-9]+)\s*([+\-]\s*[0-9]+)*(\s+[A|D])?",
             roll_command.strip())
         if not parse:
-            return f"<@{user}> Unknown command: Eg: !roll 4d6+2"
+            return f"<@{user}> Unknown command: {roll_command}"
 
         # Forget the third group as by default only the last capture of it
         # is read and returned
