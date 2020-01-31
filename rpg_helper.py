@@ -246,7 +246,6 @@ class RPGHelper():
             # not need to be resolved.
             return "UNKNOWN", roll_command
         parts = roll_command.split()
-
         # check if character resolution must happen.
         character = self.user_default[userkey]
         specific_character = False
@@ -273,8 +272,9 @@ class RPGHelper():
             # in the stats dictionary.
             return character, self.macros[command].format(
                 **stats,
-                proficiency=(
+                is_proficient=(
                     prof if command in stats["proficient_rolls"] else ""),
+                proficiency=prof,
                 adv_or_disadv=adv_or_disadv if adv_or_disadv else "")
         if command in self.characters[character]["macros"]:
             # Resolve the macro format with the key values

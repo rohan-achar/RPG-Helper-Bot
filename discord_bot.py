@@ -31,7 +31,11 @@ if __name__ == "__main__":
     PARSER = argparse.ArgumentParser()
     PARSER.add_argument(
         "-l", "--load",
-        default="slagthrone",
+        default="seonstra",
         help="Load a game by default on start")
     ARGS = PARSER.parse_args()
-    DiscordClient(RPGHelper(ARGS.load)).run(os.environ["discord_token"])
+    while True:
+        try:
+            DiscordClient(RPGHelper(ARGS.load)).run(os.environ["discord_token"])
+        except Exception:
+            print ("Exception was caught")
