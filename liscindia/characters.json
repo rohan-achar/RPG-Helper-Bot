@@ -1,19 +1,18 @@
 {
     "epona": {
-        "cha": 18,
-        "con": 10,
-        "int": 14,
+        "cha": 15,
+        "con": 9,
+        "int": 16,
         "wis": 16,
-        "str": 10,
-        "dex": 10,
+        "str": 8,
+        "dex": 9,
         "level": 10,
         "proficient_rolls": [
-            "wissave",
-            "dexsave",
-            "insight",
-            "perception",
+            "intsave",
+            "chasave",
+            "arcana",
+            "investigation",
             "persuasion",
-            "deception",
             "history"
         ]
     }    
