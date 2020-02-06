@@ -31,7 +31,7 @@ if __name__ == "__main__":
     PARSER = argparse.ArgumentParser()
     PARSER.add_argument(
         "-l", "--load",
-        default="seonstra",
+        default="inkscription",
         help="Load a game by default on start")
     ARGS = PARSER.parse_args()
     while True:
