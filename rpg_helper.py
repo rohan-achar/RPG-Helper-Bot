@@ -157,7 +157,7 @@ class RPGHelper():
 
     def handle_character(self, user, command):
         '''Add or delete characters for user.'''
-        parse = re.match(r"(add|del)\s+(.*)$", command)
+        parse = re.match(r"(add|del|show)\s+(.*)$", command)
         if not parse:
             return f"Did not understand {command}."
         char_command, args = parse.groups()
@@ -166,6 +166,8 @@ class RPGHelper():
                 return f"Deleted character {args}"
         if char_command == "add":
             return self.add_character(user, args)
+        if char_command == "show":
+            return self.show_character(user, args)
         return f"Did not understand {command}."
 
     def delete_character(self, user, name):
@@ -230,6 +232,11 @@ class RPGHelper():
         self.save_game()
         return f"Successfully created character {name} for <@{user}>"
 
+    def show_character(self, user, name):
+        if name in self.characters:
+            return f"```{json.dumps(self.characters[name], indent=4, sort_keys=True)}```"
+        return f"Did not find a character with the name: {name}"
+
     def handle_roll(self, user, roll_command):
         '''Responds to a roll command by {user}.'''
         try:
@@ -276,7 +283,8 @@ class RPGHelper():
                     prof if command in stats["proficient_rolls"] else ""),
                 proficiency=prof,
                 adv_or_disadv=adv_or_disadv if adv_or_disadv else "")
-        if command in self.characters[character]["macros"]:
+        if ("macros" in self.characters[character]
+                and command in self.characters[character]["macros"]):
             # Resolve the macro format with the key values
             # in the stats dictionary.
             return (
